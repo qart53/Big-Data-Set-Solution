@@ -1,0 +1,43 @@
+What is the total number of viewers for shows on ABC?
+A = load 'mishranurag96/Big_Data_DataSet/join2_genchanA.txt' using PigStorage(',') AS (show:chararray,channel:chararray);
+B = foreach A generate channel;
+C = filter B by channel == 'ABC';
+D = foreach C generate COUNT(C) as cnt;
+
+
+What is the number of viewers for the BAT channel?
+A = load 'mishranurag96/Big_Data_DataSet/join2_genchanA.txt' using PigStorage(',') AS (show:chararray,channel:chararray);
+B = foreach A generate channel;
+C = filter B by channel == 'BAT';
+D = foreach C generate COUNT(C) as cnt;
+
+
+What is the most viewed show on ABC channel?
+A = load 'mishranurag96/Big_Data_DataSet/join2_genchanA.txt' using PigStorage(',') AS (show:chararray,channel:chararray);
+B = foreach A generate show,channel;
+C = filter B by channel == 'ABC';
+D = group C by show;
+E = foreach D generate show, COUNT(C) as cnt;
+F = order E by cnt desc;
+
+
+What are the aired shows on ZOO,NOX, ABC channels ?
+A = load 'mishranurag96/Big_Data_DataSet/join2_genchanA.txt' using PigStorage(',') AS (show:chararray,channel:chararray);
+B = foreach A generate channel,show;
+C = filter B by ((channel == 'ABC') OR (channel == 'ZOO') OR (channel == 'NOX'));
+D = order C by channel asc;
+
+
+In HIVE QUERY
+
+What is the total number of viewers for shows on ABC?
+SELECT count(*) FROM Table1 WHERE CHANNEL = 'ABC';
+
+What is the number of viewers for the BAT channel?
+SELECT count(*) FROM Table1 WHERE CHANNEL = 'BAT';
+
+What is the most viewed show on ABC channel?
+SELECT SHOW,count(*) FROM Table1 WHERE CHANNEL = 'ABC' GROUP BY SHOW DESC;
+
+What are the aired shows on ZOO,NOX, ABC channels ?
+SELECT CHANNEL,SHOW FROM Table1 WHERE CHANNEL = 'ABC' OR CHANNEL = 'ZOO' OR CHANNEL = 'NOX' ORDER BY CHANNEL ASC;
